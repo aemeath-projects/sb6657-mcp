@@ -1,4 +1,0 @@
-# 本地 wrangler dev 使用的运行时变量，复制为 .dev.vars 后填写。
-# 逗号分隔；留空表示不启用对应校验。
-ALLOWED_HOSTS=localhost,127.0.0.1
-ALLOWED_ORIGINS=localhost,127.0.0.1

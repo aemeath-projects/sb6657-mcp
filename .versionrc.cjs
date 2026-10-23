@@ -1,12 +1,6 @@
 module.exports = {
   packageFiles: [{ filename: 'package.json', type: 'json' }],
-  bumpFiles: [
-    { filename: 'package.json', type: 'json' },
-    {
-      filename: 'src/version.ts',
-      updater: require('./scripts/version-updater.cjs'),
-    },
-  ],
+  bumpFiles: [{ filename: 'package.json', type: 'json' }],
   changelog: true,
   infile: 'CHANGELOG.md',
   header: '# Changelog\n\n所有版本变更记录\n',
