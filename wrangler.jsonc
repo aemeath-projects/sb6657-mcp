@@ -6,6 +6,8 @@
   "observability": {
     "enabled": true,
   },
+  "workers_dev": true,
+  "preview_urls": true,
   "vars": {
     "ALLOWED_HOSTS": "",
     "ALLOWED_ORIGINS": "",

@@ -154,5 +154,10 @@ vite.config.ts.timestamp-*
 .dev.vars*
 !.dev.vars.example
 
-# IDE
+# IntelliJ Idea
 .idea/
+
+# Claude Code
+.serena
+.spec-workflow
+.playwright-mcp
