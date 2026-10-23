@@ -2,6 +2,12 @@
 
 所有版本变更记录
 
+## [1.0.1](https://github.com/aemeath-projects/sb6657-mcp/compare/v1.0.0...v1.0.1) (2026-10-23)
+
+### Bug 修复
+
+* **tools:** 省略 DNA 缺失的可选字段以避免 null 污染上下文 ([aa82da1](https://github.com/aemeath-projects/sb6657-mcp/commit/aa82da11e6efa883c4e83d4da45efe4d286af3f8))
+
 ## [1.0.0](https://github.com/aemeath-projects/sb6657-mcp/compare/v0.1.0...v1.0.0) (2026-10-23)
 
 ### 新功能
