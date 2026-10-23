@@ -93,20 +93,22 @@ const lifecycleOutputSchema = z.object({
 const dnaCenterSchema = z.object({
   id: z.number().int().nullable(),
   text: z.string(),
-  normalizedText: z.string().nullable(),
-  template: z.string().nullable(),
-  sentenceSkeleton: z.string().nullable(),
-  fingerprint: z.string().nullable(),
-  fixedParts: z.array(z.string()),
-  keywords: z.array(z.string()),
-  slots: z.array(
-    z.object({
-      type: z.string(),
-      value: z.string(),
-      startIndex: z.number().int(),
-      endIndex: z.number().int(),
-    }),
-  ),
+  normalizedText: z.string().optional(),
+  template: z.string().optional(),
+  sentenceSkeleton: z.string().optional(),
+  fingerprint: z.string().optional(),
+  fixedParts: z.array(z.string()).optional(),
+  keywords: z.array(z.string()).optional(),
+  slots: z
+    .array(
+      z.object({
+        type: z.string(),
+        value: z.string(),
+        startIndex: z.number().int(),
+        endIndex: z.number().int(),
+      }),
+    )
+    .optional(),
 })
 
 const dnaOutputSchema = z.object({
@@ -304,21 +306,26 @@ export function registerAnalyticsTools(server: McpServer): void {
           throw new Sb6657ApiError(0, `未找到烂梗 ${args.memeId} 的 DNA 数据`)
         }
 
-        const normalizedCenter = {
+        /** 上游缺失的可选字段直接省略，避免 structuredContent 堆积 null 与空数组。 */
+        const normalizedCenter: z.infer<typeof dnaCenterSchema> = {
           id: toInteger(center.id),
           text: center.text,
-          normalizedText: center.normalizedText ?? null,
-          template: center.template ?? null,
-          sentenceSkeleton: center.sentenceSkeleton ?? null,
-          fingerprint: center.fingerprint ?? null,
-          fixedParts: center.fixedParts ?? [],
-          keywords: center.keywords ?? [],
-          slots: (center.slots ?? []).map((slot) => ({
-            type: slot.type,
-            value: slot.value,
-            startIndex: slot.startIndex,
-            endIndex: slot.endIndex,
-          })),
+          ...(center.normalizedText == null ? {} : { normalizedText: center.normalizedText }),
+          ...(center.template == null ? {} : { template: center.template }),
+          ...(center.sentenceSkeleton == null ? {} : { sentenceSkeleton: center.sentenceSkeleton }),
+          ...(center.fingerprint == null ? {} : { fingerprint: center.fingerprint }),
+          ...(center.fixedParts?.length ? { fixedParts: center.fixedParts } : {}),
+          ...(center.keywords?.length ? { keywords: center.keywords } : {}),
+          ...(center.slots?.length
+            ? {
+                slots: center.slots.map((slot) => ({
+                  type: slot.type,
+                  value: slot.value,
+                  startIndex: slot.startIndex,
+                  endIndex: slot.endIndex,
+                })),
+              }
+            : {}),
         }
         const nodes = (raw?.nodes ?? []).map((node) => ({
           id: toInteger(node.id),
@@ -485,26 +492,26 @@ function formatDna(
     '',
   ]
 
-  if (center.normalizedText !== null) {
+  if (center.normalizedText !== undefined) {
     lines.push(`- 标准化文本：${center.normalizedText}`)
   }
-  if (center.template !== null) {
+  if (center.template !== undefined) {
     lines.push(`- 模板：${center.template}`)
   }
-  if (center.sentenceSkeleton !== null) {
+  if (center.sentenceSkeleton !== undefined) {
     lines.push(`- 句子骨架：${center.sentenceSkeleton}`)
   }
-  if (center.fixedParts.length > 0) {
+  if (center.fixedParts?.length) {
     lines.push(`- 固定片段：${center.fixedParts.join(' / ')}`)
   }
-  if (center.keywords.length > 0) {
+  if (center.keywords?.length) {
     lines.push(`- 关键词：${center.keywords.join('、')}`)
   }
-  if (center.fingerprint !== null) {
+  if (center.fingerprint !== undefined) {
     lines.push(`- 指纹：${center.fingerprint}`)
   }
 
-  if (center.slots.length > 0) {
+  if (center.slots?.length) {
     lines.push('', '## 槽位', '')
     for (const slot of center.slots) {
       lines.push(
