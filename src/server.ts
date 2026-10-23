@@ -1,5 +1,4 @@
 import { McpServer } from '@modelcontextprotocol/server'
-import { z } from 'zod'
 
 import { registerAnalyticsTools } from './tools/analytics.js'
 import { registerMatchTools } from './tools/matches.js'
@@ -26,18 +25,6 @@ export function createServer(): McpServer {
       version: SERVER_VERSION,
     },
     { instructions: INSTRUCTIONS },
-  )
-
-  server.registerTool(
-    'ping',
-    {
-      title: 'Ping',
-      description: '健康检查工具，始终返回 pong。',
-      inputSchema: z.object({}),
-    },
-    () => ({
-      content: [{ type: 'text', text: 'pong' }],
-    }),
   )
 
   registerMemeTools(server)

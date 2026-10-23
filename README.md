@@ -45,7 +45,6 @@ pnpm build
 | `get_gallery`        | 时光相册图片与评论                                        |
 | `get_shield_words`   | 屏蔽词字典或分页列表                                      |
 | `get_static_report`  | 年度烂梗 Top20、布雷德十五勇士战报、超级逮虾户战报        |
-| `ping`               | 健康检查                                                  |
 
 每个业务工具同时返回 Markdown 文本和 `structuredContent`，并声明 `outputSchema`。
 标签参数既接受编码（如 `06`），也接受中文名（如 `群魔乱舞`）；日期筛选必须与关键词同时使用。
@@ -97,11 +96,11 @@ curl -s -X POST http://127.0.0.1:3000/mcp \
   -H 'Accept: application/json, text/event-stream' \
   -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
 
-# 调用 ping
+# 协议层存活探测（不依赖任何工具）
 curl -s -X POST http://127.0.0.1:3000/mcp \
   -H 'Content-Type: application/json' \
   -H 'Accept: application/json, text/event-stream' \
-  -d '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"ping","arguments":{}}}'
+  -d '{"jsonrpc":"2.0","id":2,"method":"ping"}'
 
 # 搜索烂梗
 curl -s -X POST http://127.0.0.1:3000/mcp \
