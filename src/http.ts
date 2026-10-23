@@ -2,7 +2,7 @@ import {
   createMcpHandler,
   hostHeaderValidationResponse,
   originValidationResponse,
-  type McpHandlerRequestOptions,
+  type McpHttpHandler,
 } from '@modelcontextprotocol/server'
 
 import { createServer } from './server.js'
@@ -16,10 +16,11 @@ export interface FetchHandlerOptions {
   allowedOrigins?: string[]
 }
 
-export interface FetchHandler {
-  fetch: (request: Request, options?: McpHandlerRequestOptions) => Promise<Response>
-  close: () => Promise<void>
-}
+/**
+ * 与 SDK 的 `McpHttpHandler` 对齐，保留 `notify` / `bus`，以便后续启用
+ * `subscriptions/listen` 服务端推送能力。
+ */
+export type FetchHandler = Pick<McpHttpHandler, 'fetch' | 'close' | 'notify' | 'bus'>
 
 const DEFAULT_PATH = '/mcp'
 
@@ -28,8 +29,8 @@ const mcpHandler = createMcpHandler(createServer)
 /**
  * 创建 web-standard 的 MCP 请求处理器，可同时用于 Node 与 Cloudflare Workers。
  *
- * Node 侧的 socket 级 Host/Origin 校验由 `src/node.ts` 完成；这里只处理
- * HTTP 层可见的校验，因此可直接运行在 Worker 运行时。
+ * Host/Origin 校验在此统一完成，Node 与 Worker 两侧不重复实现；SDK 的
+ * `createMcpHandler` 本身刻意不做校验，因此这里是唯一的校验层。
  */
 export function createFetchHandler(options: FetchHandlerOptions = {}): FetchHandler {
   const path = options.path ?? DEFAULT_PATH
@@ -64,5 +65,7 @@ export function createFetchHandler(options: FetchHandlerOptions = {}): FetchHand
       return mcpHandler.fetch(request, requestOptions)
     },
     close: () => mcpHandler.close(),
+    notify: mcpHandler.notify,
+    bus: mcpHandler.bus,
   }
 }

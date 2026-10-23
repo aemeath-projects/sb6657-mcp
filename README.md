@@ -1,6 +1,7 @@
 # sb6657-mcp
 
-基于 [MCP TypeScript SDK v2](https://github.com/modelcontextprotocol/typescript-sdk) 的 MCP Server 工程骨架。
+基于 [MCP TypeScript SDK v2](https://github.com/modelcontextprotocol/typescript-sdk) 的
+「玩机器烂梗收集」（[sb6657.cn](https://sb6657.cn)）MCP Server。
 
 同一套业务代码可同时以三种方式运行：
 
@@ -8,7 +9,8 @@
 - **Streamable HTTP**：Node 原生 `node:http` + 官方 `@modelcontextprotocol/node` 适配器。
 - **Cloudflare Workers**：直接导出 web-standard `fetch`，由 Cloudflare Workers Builds 自动构建部署。
 
-当前仅包含一个 `ping` 占位工具，用于验证端到端链路；业务功能请在此基础上扩展。
+所有工具均为**只读**：数据来自 sb6657 公开接口（`api.hguofichp.cn`）与 OSS 静态 JSON，
+不包含投稿、点赞、投票等写操作。
 
 ## 环境要求
 
@@ -27,6 +29,26 @@ pnpm build
 - `dist/index.js`：公共库入口
 - `dist/http.js`：web-standard HTTP handler
 - `dist/cli.js`：命令行入口（含 shebang）
+
+## 工具
+
+| 工具                 | 说明                                                      |
+| -------------------- | --------------------------------------------------------- |
+| `search_memes`       | 搜索或分页浏览烂梗，支持标签、日期范围、按复制次数排序    |
+| `get_hot_memes`      | 24 小时 / 7 天热榜、随机一条、首页关键词词云              |
+| `get_meme_detail`    | 烂梗详情，可选返回梗 DNA（关键词、模板、指纹）            |
+| `list_meme_tags`     | 标签字典（编码 ↔ 中文名）                                 |
+| `get_meme_rankings`  | 烂度总榜、实时热度榜、今日 PK、历史周榜                   |
+| `get_meme_lifecycle` | 生命周期看板，或按 BIRTH / BOOM / STALE / DEAD 分阶段浏览 |
+| `get_meme_dna`       | 梗 DNA v6、进化图谱与旧版关联关系                         |
+| `get_matches`        | 进行中赛事、赛事列表、队伍池、赛事烂梗                    |
+| `get_gallery`        | 时光相册图片与评论                                        |
+| `get_shield_words`   | 屏蔽词字典或分页列表                                      |
+| `get_static_report`  | 年度烂梗 Top20、布雷德十五勇士战报、超级逮虾户战报        |
+| `ping`               | 健康检查                                                  |
+
+每个业务工具同时返回 Markdown 文本和 `structuredContent`，并声明 `outputSchema`。
+标签参数既接受编码（如 `06`），也接受中文名（如 `群魔乱舞`）；日期筛选必须与关键词同时使用。
 
 ## stdio 模式
 
@@ -80,7 +102,16 @@ curl -s -X POST http://127.0.0.1:3000/mcp \
   -H 'Content-Type: application/json' \
   -H 'Accept: application/json, text/event-stream' \
   -d '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"ping","arguments":{}}}'
+
+# 搜索烂梗
+curl -s -X POST http://127.0.0.1:3000/mcp \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json, text/event-stream' \
+  -d '{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"search_memes","arguments":{"query":"原神","pageSize":3}}}'
 ```
+
+响应为 SSE 格式，`result.structuredContent` 即结构化数据，`result.content` 为对应的
+Markdown 文本。
 
 Node 侧默认绑定 `127.0.0.1`，并启用 localhost 级别的 Host/Origin 校验。若需要监听
 `0.0.0.0` 或通过反向代理暴露，请显式配置 `MCP_ALLOWED_HOSTS` 与 `MCP_ALLOWED_ORIGINS`。
@@ -164,9 +195,20 @@ src/
 ├── http.ts      # 共享 web-standard fetch handler
 ├── index.ts     # 公共库 barrel
 ├── node.ts      # node:http + toNodeHandler
-├── server.ts    # McpServer 工厂与 ping 工具
+├── server.ts    # McpServer 工厂与工具注册
 ├── version.ts   # 服务名与版本号
-└── worker.ts    # Cloudflare Worker 入口
+├── worker.ts    # Cloudflare Worker 入口
+├── sb6657/      # 数据访问层
+│   ├── client.ts    # API/OSS 请求、超时、包络解包与错误映射
+│   ├── format.ts    # Markdown 渲染与分页摘要
+│   ├── tags.ts      # 标签字典缓存与中英文解析
+│   └── types.ts     # API 类型、归一化输出与公共 zod schema
+└── tools/       # 工具域
+    ├── analytics.ts # 榜单、生命周期、DNA
+    ├── matches.ts   # 赛事与赛事烂梗
+    ├── memes.ts     # 搜索、热门、详情、标签
+    ├── misc.ts      # 相册、屏蔽词、静态战报
+    └── register.ts  # 统一的成功/失败结果封装
 ```
 
 `http.ts`、`server.ts`、`worker.ts`、`env.ts`、`version.ts` 保持 Node-free，由 ESLint
