@@ -1,6 +1,6 @@
 # sb6657-mcp
 
-「玩机器烂梗收集」（[sb6657.cn](https://sb6657.cn)）的 MCP Server，为 LLM 客户端提供只读的
+[玩机器烂梗收集](https://sb6657.cn) 的 MCP Server，为 LLM 客户端提供只读的
 烂梗检索、榜单与聚合数据。
 
 ![NPM Version](https://img.shields.io/npm/v/%40aemeath-projects%2Fsb6657-mcp?style=for-the-badge)
