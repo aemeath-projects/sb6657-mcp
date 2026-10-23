@@ -1,0 +1,5 @@
+dist
+.wrangler
+.wrangler-dry-run
+pnpm-lock.yaml
+CHANGELOG.md

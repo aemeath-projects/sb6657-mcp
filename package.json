@@ -1,0 +1,117 @@
+{
+  "name": "@aemeath-projects/sb6657-mcp",
+  "version": "0.1.0",
+  "description": "MCP server skeleton for sb6657",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "sb6657-mcp": "./dist/cli.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "packageManager": "pnpm@12.14.0",
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "start": "node dist/cli.js",
+    "start:http": "node dist/cli.js --transport http",
+    "worker:dev": "wrangler dev",
+    "worker:deploy": "wrangler deploy",
+    "worker:check": "wrangler deploy --dry-run --outdir .wrangler-dry-run",
+    "lint": "eslint \"src/**/*.ts\" \"*.ts\"",
+    "lint:fix": "eslint \"src/**/*.ts\" \"*.ts\" --fix",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write .",
+    "type-check": "tsc --noEmit",
+    "inspect": "npx @modelcontextprotocol/inspector node dist/cli.js",
+    "bump": "commit-and-tag-version",
+    "bump:patch": "commit-and-tag-version --release-as patch",
+    "bump:minor": "commit-and-tag-version --release-as minor",
+    "bump:major": "commit-and-tag-version --release-as major",
+    "changelog": "commit-and-tag-version --skip.bump --skip.commit --skip.tag",
+    "commit": "cz",
+    "prepare": "husky"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "sb6657"
+  ],
+  "author": "Aemeath Projects",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aemeath-projects/sb6657-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aemeath-projects/sb6657-mcp/issues"
+  },
+  "homepage": "https://github.com/aemeath-projects/sb6657-mcp#readme",
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,jsonc}": [
+      "prettier --write"
+    ],
+    ".github/**/*.yml": [
+      "prettier --write"
+    ],
+    "*.md": [
+      "prettier --write"
+    ]
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./http": {
+      "types": "./dist/http.d.ts",
+      "import": "./dist/http.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/node": "^2.1.1",
+    "@modelcontextprotocol/server": "^2.3.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^21.2.3",
+    "@commitlint/config-conventional": "^21.2.3",
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^24.19.2",
+    "commit-and-tag-version": "^13.3.0",
+    "commitizen": "^4.3.2",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^10.13.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import-x": "^4.17.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.0",
+    "prettier": "^3.9.10",
+    "tsup": "^9.0.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.72.0",
+    "wrangler": "^4.151.3"
+  }
+}
