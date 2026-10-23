@@ -2,6 +2,21 @@
 
 所有版本变更记录
 
+## [1.0.0](https://github.com/aemeath-projects/sb6657-mcp/compare/v0.1.0...v1.0.0) (2026-10-23)
+
+### 新功能
+
+* **tools:** 实现 sb6657 烂梗只读工具集 ([9f089e7](https://github.com/aemeath-projects/sb6657-mcp/commit/9f089e75eba3d34f52445e21831a3dccf7eb0a02))
+
+### 重构
+
+* **tools:** 移除占位的 ping 工具 ([ee401ce](https://github.com/aemeath-projects/sb6657-mcp/commit/ee401ce8036ce9c2d9156c532b818861dc0b8e19))
+
+### 文档
+
+* 重写 README 并注明公共导出契约 ([cacce10](https://github.com/aemeath-projects/sb6657-mcp/commit/cacce102c93aa4a448b64457e3ef26e3524fa56a))
+* **changelog:** 移除重复的文件头 ([14dbed6](https://github.com/aemeath-projects/sb6657-mcp/commit/14dbed67efb7facdf6b611a8ccc864ff6d541022))
+
 ## 0.1.0 (2026-10-23)
 
 ### 新功能
