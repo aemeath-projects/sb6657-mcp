@@ -138,8 +138,8 @@ pnpm worker:deploy   # 手动部署，仅用于调试
 ```
 
 日常发布使用 Cloudflare Workers Builds：在 Dashboard 连接 Git 仓库，生产分支设为
-`master`，Build command 为 `pnpm install --frozen-lockfile`，Deploy command 为
-`pnpm worker:deploy`，构建变量需设置 `PNPM_VERSION=12.14.0`。运行时变量
+`master`，Root directory 为 `/`，Build command 为 `pnpm run build`，Deploy command 为
+`npx wrangler deploy`，构建环境变量只需 `NODE_VERSION=26`。运行时变量
 `ALLOWED_HOSTS`、`ALLOWED_ORIGINS` 在 Worker 的 Variables 中配置。Worker 端 MCP 端点
 固定为 `/mcp`，健康检查为 `/health`。
 
