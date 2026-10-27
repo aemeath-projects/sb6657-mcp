@@ -5,6 +5,15 @@
   "compatibility_date": "2026-10-22",
   "observability": {
     "enabled": true,
+    "traces": {
+      "enabled": true,
+    },
+    "issues": {
+      "enabled": true,
+    },
+  },
+  "cache": {
+    "enabled": true,
   },
   "workers_dev": true,
   "preview_urls": true,
