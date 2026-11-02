@@ -14,7 +14,7 @@
   "engines": {
     "node": ">=24.22.1"
   },
-  "packageManager": "pnpm@12.15.0",
+  "packageManager": "pnpm@12.16.1",
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
@@ -99,11 +99,11 @@
     "@commitlint/cli": "^21.2.4",
     "@commitlint/config-conventional": "^21.2.4",
     "@eslint/js": "^10.0.1",
-    "@types/node": "^26.6.5",
+    "@types/node": "^26.6.6",
     "commit-and-tag-version": "^13.3.0",
     "commitizen": "^4.3.2",
     "cz-conventional-changelog": "^3.3.0",
-    "eslint": "^10.13.0",
+    "eslint": "^10.14.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import-x": "^4.17.1",
     "husky": "^9.1.7",
@@ -111,7 +111,7 @@
     "prettier": "^3.9.10",
     "tsup": "^9.0.0",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.72.0",
-    "wrangler": "^4.152.0"
+    "typescript-eslint": "^8.72.1",
+    "wrangler": "^4.156.0"
   }
 }
