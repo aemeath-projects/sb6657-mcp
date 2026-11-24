@@ -14,7 +14,7 @@
   "engines": {
     "node": ">=24.22.1"
   },
-  "packageManager": "pnpm@12.21.0",
+  "packageManager": "pnpm@12.23.0",
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
@@ -107,11 +107,11 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import-x": "^4.18.1",
     "husky": "^9.1.7",
-    "lint-staged": "^17.6.0",
+    "lint-staged": "^17.6.2",
     "prettier": "^3.10.1",
     "tsup": "^9.0.0",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.72.2",
-    "wrangler": "^4.162.0"
+    "typescript-eslint": "^8.73.0",
+    "wrangler": "^4.166.0"
   }
 }
